@@ -1,0 +1,155 @@
+<html>
+<head>
+    <link href="style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script type="text/javascript" src="motus.js"></script>
+    <script type="text/javascript" src="dict.js"></script>
+
+    <script type="text/javascript">
+        function start() {
+           var allW = getDict().split(" ")
+
+           console.log(allW[Date.now()%allW.length])
+            setWord(allW[Date.now()%allW.length])
+        }
+        
+        </script>
+</head>
+<body onload="start()">
+    <script>
+    document.onkeypress = function(evt) {
+        evt = evt || window.event;
+        var charCode = evt.keyCode || evt.which;
+        var charStr = String.fromCharCode(charCode);
+        
+        if (event.keyCode === 13){
+            addWord()
+        }else{
+            if(charCode===46){
+                removeLetter();
+            }
+            else{
+                if(charStr!=""){
+                    addLetter(charStr);
+                }
+            }
+            
+        }
+    };
+      $(document).ready(function() {
+            $("a").click(function(event) {
+                var key = event.currentTarget.className;
+                if (key.split(' ')[0]=="key"){
+                    if (key.split(' ')[1]=="VAL"){
+                        console.log(addWord())
+                    }
+                    else{
+                        if (key.split(' ')[1]=="DEL"){
+                            removeLetter();
+                        }
+                        else{
+                            var val = key.split(' ')[1].charAt(1)
+                            console.log(val);
+                            addLetter(val);
+                        }
+                    }
+                }
+                
+            });
+        });
+        </script>
+
+    <div class="container">        
+        <div class="game">
+            <div class="try0">
+                <span class="case case00"></span>
+                <span class="case case01"></span>
+                <span class="case case02"></span>
+                <span class="case case03"></span>
+                <span class="case case04"></span>
+            </div>
+            <div class="try1">
+                <span class="case case10"></span>
+                <span class="case case11"></span>
+                <span class="case case12"></span>
+                <span class="case case13"></span>
+                <span class="case case14"></span>
+            </div>
+            <div class="try2">
+                <span class="case case20"></span>
+                <span class="case case21"></span>
+                <span class="case case22"></span>
+                <span class="case case23"></span>
+                <span class="case case24"></span>
+            </div>
+            <div class="try3">
+                <span class="case case30"></span>
+                <span class="case case31"></span>
+                <span class="case case32"></span>
+                <span class="case case33"></span>
+                <span class="case case34"></span>
+            </div>
+            <div class="try4">
+                <span class="case case40"></span>
+                <span class="case case41"></span>
+                <span class="case case42"></span>
+                <span class="case case43"></span>
+                <span class="case case44"></span>
+            </div>
+            <div class="try5">
+                <span class="case case50"></span>
+                <span class="case case51"></span>
+                <span class="case case52"></span>
+                <span class="case case53"></span>
+                <span class="case case54"></span>
+            </div>
+        </div>
+        <div id="keyboard">
+           
+             
+            <ul class="cf" id="qwerty">
+                
+                <li><a href="#" class="key Kq"><span>q</span></a></li>
+                <li><a href="#" class="key Kw"><span>w</span></a></li>
+                <li><a href="#" class="key Ke"><span>e</span></a></li>
+                <li><a href="#" class="key Kr"><span>r</span></a></li>
+                <li><a href="#" class="key Kt"><span>t</span></a></li>
+                <li><a href="#" class="key Ky"><span>y</span></a></li>
+                <li><a href="#" class="key Ku"><span>u</span></a></li>
+                <li><a href="#" class="key Ki"><span>i</span></a></li>
+                <li><a href="#" class="key Ko"><span>o</span></a></li>
+                <li><a href="#" class="key Kp"><span>p</span></a></li>
+               
+            </ul>
+            <ul class="cf" id="asdfg" style="margin-left:40px;">
+                <li><a href="#" class="key Ka"><span>a</span></a></li>
+                <li><a href="#" class="key Ks"><span>s</span></a></li>
+                <li><a href="#" class="key Kd"><span>d</span></a></li>
+                <li><a href="#" class="key Kf"><span>f</span></a></li>
+                <li><a href="#" class="key Kg"><span>g</span></a></li>
+                <li><a href="#" class="key Kh"><span>h</span></a></li>
+                <li><a href="#" class="key Kj"><span>j</span></a></li>
+                <li><a href="#" class="key Kk"><span>k</span></a></li>
+                <li><a href="#" class="key Kl"><span>l</span></a></li>
+                
+            </ul>
+            <ul class="cf" id="zxcvb">
+                <li><a href="#" class="key DEL" id="delete"><span>Delete</span></a></li>
+                <li><a href="#" class="key Kz"><span>z</span></a></li>
+                <li><a href="#" class="key Kx"><span>x</span></a></li>
+                <li><a href="#" class="key Kc"><span>c</span></a></li>
+                <li><a href="#" class="key Kv"><span>v</span></a></li>
+                <li><a href="#" class="key Kb"><span>b</span></a></li>
+                <li><a href="#" class="key Kn"><span>n</span></a></li>
+                <li><a href="#" class="key Km"><span>m</span></a></li>
+                <li><a href="#" class="key VAL" id="delete"><span>Enter</span></a></li>
+            </ul>
+        </div>
+          
+          
+          
+          
+          
+    </div>
+</body>
+</html>
