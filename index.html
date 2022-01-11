@@ -2,15 +2,70 @@
 <head>
     <link href="style.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="motus.js"></script>
     <script type="text/javascript" src="dict.js"></script>
 
     <script type="text/javascript">
+    
         function start() {
-           var allW = getDict().split(" ")
+            setStat()
+            console.log(localStorageStat)
+            
+            let nbPartie = localStorage.getItem("nbPartie");
+            if(nbPartie==null)
+                localStorage.setItem("nbPartie", 1);
+            else
+                localStorage.setItem("nbPartie", parseInt(nbPartie)+1);
+            
+           setDict(getDict().split(" "))
+            var allW = []
+            allW=getDict2()
 
-           console.log(allW[Date.now()%allW.length])
-            setWord(allW[Date.now()%allW.length])
+            let today = new Date();
+            today.setHours(0)
+            today.setSeconds(0)
+            today.setMinutes(0)
+
+            var i =parseInt(today.getTime()/10000)%allW.length
+        
+            console.log(allW.length, allW[i])
+
+            setWord(allW[i])
+
+            if (localStorageStat["dernierMots"]==allW[i]){
+
+                var grille = localStorageStat["grille"];
+                grille.forEach(element => {
+                    element.forEach(e => {
+                        addLetter(e)
+                    });
+                    var res = addWord(false)
+                    if (res[0]==6 && res[1]==false){
+                            gameOver()
+                            $('#resPerdu').modal();
+                        }
+                        else{
+                            if(res[1]==true){
+                                gameOver()
+								loadStat()
+                                $('#resPerdu').modal();
+                            }
+                        }
+                });
+            }
+            else{
+                localStorageStat["dernierMots"]=allW[i];
+                localStorageStat["grille"]=[]
+                saveStat()
+            }
+            
+
+            
+            
+             
         }
         
         </script>
@@ -23,7 +78,17 @@
         var charStr = String.fromCharCode(charCode);
         
         if (event.keyCode === 13){
-            addWord()
+            var res = addWord(true)
+                        if (res[0]==6 && res[1]==false){
+                            gameOver()
+                            $('#resPerdu').modal();
+                        }
+                        else{
+                            if(res[1]==true){
+                                gameOver()
+                                $('#resPerdu').modal();
+                            }
+                        }
         }else{
             if(charCode===46){
                 removeLetter();
@@ -41,7 +106,17 @@
                 var key = event.currentTarget.className;
                 if (key.split(' ')[0]=="key"){
                     if (key.split(' ')[1]=="VAL"){
-                        console.log(addWord())
+                        var res = addWord(true)
+                        if (res[0]==6 && res[1]==false){
+                            gameOver()
+                            $('#resPerdu').modal();
+                        }
+                        else{
+                            if(res[1]==true){
+                                gameOver()
+                                $('#resPerdu').modal();
+                            }
+                        }
                     }
                     else{
                         if (key.split(' ')[1]=="DEL"){
@@ -151,5 +226,42 @@
           
           
     </div>
+    <div id="resPerdu" class="modal">
+        
+        <div class="try">
+            <span class="case case0 "></span>
+            <span class="case case1 "></span>
+            <span class="case case2 "></span>
+            <span class="case case3 "></span>
+            <span class="case case4 "></span>
+			<span class="case case5 emptyCase"></span>
+			<span class="case case6 emptyCase"><a href="#" onclick="share()"><i class="fas fa-share-alt fa-2x"></i></a></span>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td>Partie jouées :</td><td><span class="partiejouees"></span></td>
+                </tr>
+                <tr>
+                    <td>Partie gagnées en 1 coup : </td><td><span class="nbPartie1"></span></td>
+                </tr>
+                <tr>
+                    <td>Partie gagnées en 2 coups : </td><td><span class="nbPartie2"></span></td>
+                </tr> 
+                <tr>
+                    <td>Partie gagnées en 3 coups : </td><td><span class="nbPartie3"></span></td>
+                </tr>
+                <tr>
+                    <td>Partie gagnées en 4 coups : </td><td><span class="nbPartie4"></span></td>
+                </tr>
+                <tr>
+                    <td>Partie gagnées en 5 coups : </td><td><span class="nbPartie5"></span></td>
+                </tr>
+                <tr>
+                    <td>Partie gagnées en 6 coups : </td><td><span class="nbPartie6"></span></td>
+                </tr>
+            </table>
+        </div>
+      </div>
 </body>
 </html>
