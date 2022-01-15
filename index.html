@@ -9,8 +9,36 @@
     <script type="text/javascript" src="dict.js"></script>
 
     <script type="text/javascript">
-    
+        function restart(){
+
+            localStorageStat["reload"]=true
+            var allW=getDict2()
+            var elements = parseInt(document.getElementById("idVal").value)
+            if (Number.isInteger(elements) && elements<allW.length){
+                document.getElementById("idVal").value = ""
+                var i = elements;
+            }else{
+                var i =Math.floor(Math.random() * allW.length);
+            }
+            
+            iWord=i;
+            
+            setWord(allW[i])
+
+            console.log(allW.length, allW[i])
+ 
+            localStorageStat["dernierMots"]=allW[i];
+            localStorageStat["grille"]=[]
+            localStorageStat["idMot"]=i
+            saveStat()
+            location.reload();
+            
+
+
+            
+        }
         function start() {
+            document.getElementById("shareId").hidden=true
             setStat()
             console.log(localStorageStat)
             
@@ -20,9 +48,11 @@
             else
                 localStorage.setItem("nbPartie", parseInt(nbPartie)+1);
             
-           setDict(getDict().split(" "))
+            setDict(getDict().split(" "))
             var allW = []
             allW=getDict2()
+            if (localStorageStat["reload"]==false){
+            
 
             let today = new Date();
             today.setHours(0)
@@ -30,7 +60,7 @@
             today.setMinutes(0)
 
             var i =parseInt(today.getTime()/10000)%allW.length
-        
+            iWord = i;
             console.log(allW.length, allW[i])
 
             setWord(allW[i])
@@ -58,11 +88,21 @@
             }
             else{
                 localStorageStat["dernierMots"]=allW[i];
+
                 localStorageStat["grille"]=[]
                 saveStat()
             }
             
 
+        }
+        else{
+            localStorageStat["reload"]=false
+            setWord(localStorageStat["dernierMots"])
+            document.getElementById("idMot").innerText=localStorageStat["idMot"];
+            iWord = localStorageStat["idMot"];
+            document.getElementById("shareId").hidden=false
+            saveStat()
+        }
             
             
              
@@ -70,7 +110,7 @@
         
         </script>
 </head>
-<body onload="start()">
+<body id="body" onload="start()">
     <script>
     document.onkeypress = function(evt) {
         evt = evt || window.event;
@@ -134,7 +174,11 @@
         });
         </script>
 
-    <div class="container">        
+    <div class="container">     
+        <div id="shareId">
+            id du mot : <span id="idMot"></span><br>
+            id d'un mot ?:<input type="text" id="idVal"><button onclick="restart()">Go</button>
+        </div>   
         <div class="game">
             <div class="try0">
                 <span class="case case00"></span>
@@ -226,7 +270,7 @@
           
           
     </div>
-    <div id="resPerdu" class="modal">
+    <div id="resPerdu" class="modal" >
         
         <div class="try">
             <span class="case case0 "></span>
@@ -235,7 +279,8 @@
             <span class="case case3 "></span>
             <span class="case case4 "></span>
 			<span class="case case5 emptyCase"></span>
-			<span class="case case6 emptyCase"><a href="#" onclick="share()"><i class="fas fa-share-alt fa-2x"></i></a></span>
+			<span class="case case6 emptyCase"><button onclick="share()"><i class="fas fa-share-alt fa-2x"></i></button></span>
+            <span class="case case6 emptyCase"><button onclick="restart()"><i class="fas fa-undo fa-2x"></i></i></button></span>
         </div>
         <div>
             <table>

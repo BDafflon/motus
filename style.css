@@ -44,6 +44,8 @@ background: rgb(200, 200, 200) ;
 .emptyCase
 {
     background: rgb(255, 255, 255) !important;
+	width: 30px;
+	height: 30px;
     
 }
   
@@ -181,6 +183,10 @@ li {float: left;}
 #delete {width: 72px;}
 #enter {width: 85px;}
 
+#resPerdu{
+	margin-top: 100px !important; 
+	vertical-align: top;
+}
 
 #main {
 	width: 700px;
